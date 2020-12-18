@@ -41,7 +41,7 @@
                                        <label class="col-sm-2 control-label col-lg-2" for="inputSuccess">Company</label>
                                         <div class="col-lg-10">
                                            <select class="form-control m-bot15" name="companies">
-                                              <option disable>Select Company</option>
+                                              <option disabled>Select Company</option>
                                                 <?php
                                                     foreach ($company as $key => $value) { ?>
                                                 
@@ -54,12 +54,12 @@
                                        <label class="col-sm-2 control-label col-lg-2" for="inputSuccess">Rooms</label>
                                         <div class="col-lg-10">
                                            <select class="form-control m-bot15" name="rooms">
-                                              <option disable>Select Room</option>
+                                              <option disabled>Select Room</option>
                                                   <?php
                                                     foreach ($rooms as $key => $value) { ?>
                                                 
-                                              <option value="<?php echo !empty($rooms[$key]['room_number'])?$rooms[$key]['room_number']:''; ?>"<?php if($fields[0]['rooms']==$rooms[$key]['room_number']){echo "selected"; } ?>>
-                                                <?php echo !empty($rooms[$key]['room_number'])?$rooms[$key]['room_number']:""; ?>
+                                              <option value="<?php echo !empty($rooms[$key]['room_type'])?$rooms[$key]['room_type']:''; ?>"<?php if($fields[0]['rooms']==$rooms[$key]['room_type']){echo "selected"; } ?>>
+                                                <?php echo !empty($rooms[$key]['room_type'])?$rooms[$key]['room_type']:""; ?>
                                                 </option>
                                             <?php } ?>
                                           </select>
@@ -69,7 +69,7 @@
                                       <label class="col-sm-2 col-sm-2 control-label">Currency</label>
                                       <div class="col-sm-10">
                                           <select class="form-control m-bot15" name="currency_mode">
-                                              <option>Select Currency Mode</option>
+                                              <option disabled>Select Currency Mode</option>
                                                <option value="0" <?php if($fields[0]['currency_mode']==0){echo "selected"; }else{echo ""; } ?>>Pesos Uruguayos</option>
                                               <option value="1" <?php if($fields[0]['currency_mode']==1){echo "selected"; }else{echo ""; } ?>>USD</option>
                                               <option value="2" <?php if($fields[0]['currency_mode']==2){echo "selected"; }else{echo ""; } ?>>A$</option>

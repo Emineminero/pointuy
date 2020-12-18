@@ -15,11 +15,12 @@ class RatesController extends CI_Controller{
 
 
 	public function add_new(){
-
-
-		$data['company']=$this->RatesModel->getCompanyList();
-		$data['rooms']=$this->RatesModel->getRoomList();
-
+		$hotel_id = $this->session->userdata['hotel_id'];
+		$data['company']=$this->RatesModel->getCompanyList($hotel_id);
+		$data['rooms']=$this->RatesModel->getRoomList($hotel_id);
+		  // echo"<pre>";
+		  // print_r($data);
+		  // exit;
 		$this->load->view("header");
 		$this->load->view("rates/add_rate",$data);
 		$this->load->view("footer");
@@ -40,13 +41,14 @@ class RatesController extends CI_Controller{
 		$rooms=$this->input->post('rooms');
 		$currency_mode=$this->input->post('currency_mode');
 		$room_price=$this->input->post('room_price');
-	
+		$hotel_id = $this->session->userdata['hotel_id'];
 
 		$insert_data=array(
             'companies'=>$companies, 
 			'rooms'=>$rooms,
 			'currency_mode' =>$currency_mode,
-			'room_price' =>$room_price
+			'room_price' =>$room_price,
+			'hotel_id' =>$hotel_id
 		);
 
 
@@ -77,8 +79,8 @@ class RatesController extends CI_Controller{
 
 
 	public function showRatesList(){
-
-		$data['fields']=$this->RatesModel->getListData();
+		$hotel_id = $this->session->userdata['hotel_id'];
+		$data['fields']=$this->RatesModel->getListData($hotel_id);
 
 		$this->load->view("header");
 		$this->load->view("rates/rates_list",$data);
@@ -97,9 +99,9 @@ class RatesController extends CI_Controller{
 	public function editRates(){
 
 		$id=$_REQUEST['id'];
-
-		$data['company']=$this->RatesModel->getCompanyList();
-		$data['rooms']=$this->RatesModel->getRoomList();
+		$hotel_id = $this->session->userdata['hotel_id'];
+		$data['company']=$this->RatesModel->getCompanyList($hotel_id);
+		$data['rooms']=$this->RatesModel->getRoomList($hotel_id);
 		
 		$data['fields']=$this->RatesModel->getItemData($id);
 		$this->load->view("header");
@@ -126,13 +128,14 @@ class RatesController extends CI_Controller{
 		$rooms=$this->input->post('rooms');
 		$currency_mode=$this->input->post('currency_mode');
 		$room_price=$this->input->post('room_price');
-	
+		$hotel_id = $this->session->userdata['hotel_id'];
 
 		$updateData=array(
             'companies'=>$companies, 
 			'rooms'=>$rooms,
 			'currency_mode' =>$currency_mode,
-			'room_price' =>$room_price
+			'room_price' =>$room_price,
+			'hotel_id' =>$hotel_id
 		);
 
 

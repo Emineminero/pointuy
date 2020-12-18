@@ -2,6 +2,7 @@
     <!-- js placed at the end of the document so the pages load faster -->
     <script src="<?php echo base_url(); ?>assets/js/jquery.js"></script>
     <script src="<?php echo base_url(); ?>assets/js/jquery-1.8.3.min.js"></script>
+	<!--<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js" type="text/javascript"></script>-->
     <script src="<?php echo base_url(); ?>assets/js/bootstrap.min.js"></script>
     <script src="<?php echo base_url(); ?>assets/hmsJS/select2/select2.min.js"></script>
     <script class="include" type="text/javascript" src="<?php echo base_url(); ?>assets/js/jquery.dcjqaccordion.2.7.js"></script>
@@ -12,10 +13,7 @@
     <script src="<?php echo base_url(); ?>assets/js/owl.carousel.js" ></script>
     <script src="<?php echo base_url(); ?>assets/js/jquery.customSelect.min.js" ></script>
     <script src="<?php echo base_url(); ?>assets/js/respond.min.js" ></script>
-    <script type="text/javascript" language="javascript" src="<?php echo base_url(); ?>assets/assets/advanced-datatable/media/js/jquery.dataTables.js"></script>
-    
-
-  
+    <script type="text/javascript" language="javascript" src="<?php echo base_url(); ?>assets/assets/advanced-datatable/media/js/jquery.dataTables.js"></script>   
 
     <!--common script for all pages-->
     <script src="<?php echo base_url(); ?>assets/js/common-scripts.js"></script>
@@ -28,8 +26,11 @@
     <script src="<?php echo base_url(); ?>assets/js/easy-pie-chart.js"></script>
     <script src="<?php echo base_url(); ?>assets/js/count.js"></script>
     <script src="<?php echo base_url(); ?>assets/hmsJS/generalJS.js"></script>
-	<script src="<?php echo base_url(); ?>assets/assets/jqueryvalidate/jquery.validate.min.js"></script>
+	
+    <script src="<?php echo base_url(); ?>assets/assets/jqueryvalidate/jquery.validate.min.js"></script>
     <script src="<?php echo base_url(); ?>assets/assets/jqueryvalidate/custom-validate.js"></script>
+   
+
     <script type="text/javascript">
 
 		$(document).ready(function(){	

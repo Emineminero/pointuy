@@ -23,6 +23,7 @@
         <div class="row">
         	<div class="col-lg-12">
             	<section class="panel">
+            		<input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search here" style="float: right; margin-right: 20px; margin-top: 5px; width: 250px;">
             		<header class="panel-heading">Rates List</header>
 					<div class="panel-body">
 						<div class="adv-table">
@@ -30,8 +31,8 @@
 								<thead>
 									<tr>
 										<!--<th>S.No#</th>-->
-										<th>Company Name</th>
-										<th>Room No.</th>
+										<th>Name</th>
+										<th>Room Type</th>
 										<th>Currency</th>
 										<th>Room Price</th>
 										<th>Action</th>
@@ -63,6 +64,11 @@
 										<a  href="<?php echo site_url($delete_url) ?>" class="deleteClass">
 											<button type="button" class="btn btn-danger"><i class="icon-trash"></i></button>
 										</a>
+											<a  href="<?php echo base_url(); ?>index.php/rate/RatesController/add_new" class="deleteClass">
+
+											<button type="button" class="btn btn-success"><i class="icon-plus"></i></button>
+
+										</a>
 									</td>
 								</tr>
 								<?php
@@ -78,3 +84,26 @@
 		</div>
 	</section>
 </section>
+<script>
+function myFunction() {
+  // Declare variables
+  var input, filter, table, tr, td, i, txtValue;
+  input = document.getElementById("myInput");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("example");
+  tr = table.getElementsByTagName("tr");
+
+  // Loop through all table rows, and hide those who don't match the search query
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[0];
+    if (td) {
+      txtValue = td.textContent || td.innerText;
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }
+  }
+}
+</script>

@@ -8,8 +8,10 @@ function deleteItem($item, event) {
 
 $("#user_name").on('change', function(event) {
 	let userName = $(this).val();
+	let sitebaseurl = $( "#sitebaseurl" ).val();
+	let url = sitebaseurl + '/user/UserController/check_dupilcate_user_name';
 	$.ajax({
-  		url  : 'check_dupilcate_user_name',
+  		url  : url,
   		method: "post",
   		data: { userName : userName },
   		dataType: "text"
@@ -18,18 +20,20 @@ $("#user_name").on('change', function(event) {
 		{
 			event.preventDefault();
 			$("#user_name").val('');
-			alert("username already exists. Kindly try another one");
+			alert("username already exists. Kindly try another one.");
 			return false;
 		}
   	}).fail(function() {
-    	alert( "error" );
+    	alert( "something went wrong." );
   	});
 });
 
+var count = 0;
 $( "#add_room" ).click(function()
 {
 	let html = "";
 	let room_type = $( "#room_type" ).val();
+	
 	let cant = $( "#cant" ).val();
 	let pax = $( "#pax" ).val();
 	let field = (room_type == "") ? "room type" : (cant <= 0) ? " cant" : (pax <= 0) ? " pax" : "";
@@ -41,25 +45,34 @@ $( "#add_room" ).click(function()
 	else
 	{
 		var $added = 0;
-		$('input[name^="room_types"]').each( function() {
-        	if( room_type == $(this).val() )
-        	{
-        		alert(room_type+" already added. kindly add another one.");
-        		$added = 1;
-        	}
-    	});
+		// count++;
+		// $('input[name^="room_types"]').each( function() {
+        	// if( room_type == $(this).val() )
+        	// {
+        		// alert(room_type+" already added. kindly add another one.");
+        		// $added = 1;
+        	// }
+    	// });
     	if($added == 0)
     	{
+			// alert(pax);
+			$("#no_of_persons").attr({
+			   "max" : pax,        // substitute your own
+			   "min" : 0          // values (or variables) here
+			});
 			for(i = 1; i <= cant; i++)
 			{
-				html += "<div class='room_row'><div class='onerow'>";
-				html += "<input type='text' class='form-control' id='room_type_name' name='room_types[]' value='"+room_type+"' readonly style='border:none;width: 120px;' />&nbsp;";
+				count++;
+				get_rooms(room_type,count);
+				html += "<div class='room_row'>";
+				html += "<div class='onerow'>";
+				html += "<input type='text' class='form-control' id='room_type_name' name='room_type[]' value='"+room_type+"' readonly style='border:none;width: 120px;' />&nbsp;";
 				html += "</div>";
 				html += "<div class='onerow'>";
 				html += "<p>May</p>&nbsp;";
 				html += "</div>";
 				html += "<div class='onerow'>";
-				html += "<input type='number' class='form-control' name='no_of_persons[]' min='0' value='0' style='width: 70px;' />&nbsp;";
+				html += "<input type='number' class='form-control' id='no_of_persons' name='no_of_persons[]' min='0' max='"+ pax +"' value='0' style='width: 70px;' />&nbsp;";
 				html += "</div>";
 				html += "<div class='onerow'>";
 				html += "<p>Bebe</p>&nbsp;";
@@ -74,19 +87,37 @@ $( "#add_room" ).click(function()
 				html += "<input type='number' class='form-control' name='no_of_cuna[]' min='0' value='0' style='width: 70px;' />&nbsp;";
 				html += "</div>";
 				html += "<div class='onerow'>";
-				html += "<input class='form-control' id='room_no' name='room_nos[]' placeholder='room no' style='width: 120px;' />&nbsp;";
+				html += "<select class='' id='room_no"+count+"' name='room_nos[]' style='width: 180px;border: 1px solid #e2e2e4;box-shadow: none;color: #000;vertical-align: middle;border-radius: 4px;transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;margin-top: -56px;z-index: 1;position: relative;height: 34px;'>";
+				// html += "<option value=''>select room type</option>";
+				html += "</select>";
 				html += "</div>";
+				// html += "<div class='onerow'>";
+				// html += "<div class='room_no_dropdown'>";
+                // html += "<ul>";
+                // html += "</ul>";
+                // html += "</div></div>";
+				
 				html += "<div class='onerow'>";
-				html += "<div class='room_no_dropdown'>";
-                html += "<ul>";
-                html += "</ul>";
-                html += "</div></div></div>";
+				html += "<i data-id='"+ count +"'  class='icon-trash delete' style='font-size: 24px;position: absolute;margin-top: -30px;color: red;'></i>&nbsp;";
+				html += "</div>";
+				
+                html += "</div>";
 
 				$("#room_details").append(html);
 				html = "";
+				// $( "#room_type" ).val('');
+				// $( "#cant" ).val(0);
+				// $( "#pax" ).val(0);
 			}
 		}
 	}
+});
+
+$(document).on('click', '.delete', function(e) {
+var val = $(this).data("id");
+ // $('.room_row').remove();
+ $(this).closest('.room_row').remove();
+// alert(val);
 });
 
 $(document).on( 'keyup', "#room_no", function(){
@@ -105,7 +136,8 @@ $(document).on( 'keyup', "#room_no", function(){
 			data: { room_type : room_type, room_no : room_no },
 			dataType: "text"
 		}).done(function( data ) {
-			$('.room_no_dropdown ul').html(data);
+			if(data){
+				$('.room_no_dropdown ul').html(data);
 			$('.room_no_dropdown ul li').css('cursor','pointer');
 			$('.room_no_dropdown ul li').click(function(){
 				let room = $(this).text();
@@ -113,6 +145,7 @@ $(document).on( 'keyup', "#room_no", function(){
 				$('.room_no_dropdown').hide();
 			});
 			$('.room_no_dropdown').show();
+			}
   		}).fail(function() {
     		alert( "error" );
   		});
@@ -187,7 +220,7 @@ $(document).on('input','#checkout_date',function(){
 	}
 });
 
-$(document).ready(function() {
+$(function () {
     $('#checkin_date').datepicker({
         onSelect: function(dateText, inst) {
           
@@ -204,10 +237,8 @@ $(document).ready(function() {
             }
         }
     });
-});
-
-$(document).ready(function() {
-    $('#checkout_date').datepicker({
+	
+	 $('#checkout_date').datepicker({
         onSelect: function(dateText, inst) {
           
             var today = new Date();
@@ -222,11 +253,13 @@ $(document).ready(function() {
             }
         }
     });
+	
+	 // $('#room_type_name')
 });
 
-
-
-
+// $(document).ready(function() {
+   
+// });
 
 $(document).on('input','#no_of_days',function(){
 	let no_of_days = $(this).val();
@@ -247,36 +280,68 @@ $(document).on('input','#no_of_days',function(){
 			var mm = newdate.getMonth() + 1;
 			var y = newdate.getFullYear();
 			var someFormattedDate = mm+'-'+dd+'-'+y;
-			console.log(someFormattedDate);
-			//var someFormattedDate = y + '-' + mm + '-' + dd;
-			var checkoutField = $('#checkout_date');
-			checkoutField.datepicker('setDate',new Date(someFormattedDate));
+
+			var someFormattedDate = y + '-' + mm + '-' + dd;
+			$('#checkout_date').val(someFormattedDate);
 		}
 	}
 });
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+function get_rooms(room_type,count){
+	if(room_type){
+		let baseurl = $( "#baseurl" ).val();
+		let url = baseurl + 'reservation/ReservationController/loadRoom';
+		$.ajax({
+			type: "post",
+			url: url,
+			data: {room_type:room_type},
+			success: function (response) {
+				var htmlOptions = [];
+				var toAppend = '';
+				var data = JSON.parse(response);
+				if( data.length >0){
+					for( item in data ) {
+						toAppend+='<option value="'+data[item].room_number +'">'+ data[item].room_number +'</option>';
+						
+						// html = '<option value="' + data[item].room_number + '">' + data[item].room_number + '</option>';
+						// htmlOptions[htmlOptions.length] = html;
+					}
+					$("#room_no"+count).append(toAppend)
+					// select.empty().append( htmlOptions.join('') );
+				} else{
+					toAppend+='<option value="-1">no item found</option>';
+					$("#room_no"+count).append(toAppend)
+				}
+			},
+			error: function(error) {
+				alert('no data found.');
+			}
+		});
+	}
+}
+$(document).on('click', '#charge_to', function(e) {
+var val = $( this ).val();
+if(val == '3'){
+	$('#charge_to_clients').css("display", "block");
+	$('#charge_to_companys').css("display", "none");
+} else if(val == '4'){
+	$('#charge_to_companys').css("display", "block");
+	$('#charge_to_clients').css("display", "none");
+} else {
+	$('#charge_to_companys').css("display", "none");
+	$('#charge_to_clients').css("display", "none");
+}
+});
+$(document).on('click', '#bill_to', function(e) {
+var val = $( this ).val();
+if(val == '3'){
+	$('#bill_to_clients').css("display", "block");
+	$('#bill_to_companys').css("display", "none");
+} else if(val == '4'){
+	$('#bill_to_clients').css("display", "none");
+	$('#bill_to_companys').css("display", "block");
+} else {
+	$('#bill_to_clients').css("display", "none");
+	$('#bill_to_companys').css("display", "none");
+}
+});

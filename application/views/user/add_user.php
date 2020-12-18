@@ -35,15 +35,40 @@
                             	<label for="confirm_password">Confirm Password</label>
                                 <input type="password" value="" autocomplete="off" id="pwd2" name="confirm_password" class="form-control" oninput="check(this)" placeholder="Re Enter Password"  />
                             </div>
+							<?php if($this->session->userdata['isSuperAdmin'] == 1){?>
+								<div class="form-group">
+                            	<label for="sector">Hotel Name</label>
+                                <select class="form-control m-bot15" name="hotel_id" id="hotel_id" required>
+									<option></option>
+									<?php
+									 $this->db->select('*');
+									$this->db->from('hotels');
+									$this->db->order_by('hotel_id', 'ASC');
+									$data=$this->db->get()->result_array();
+										if(!empty($data))
+										{
+											foreach($data as $hotel)
+											{
+												$selected = "";
+												if(!empty($fields['hotel_id']) && $fields['hotel_id'] == $hotel['hotel_id']) $selected = "selected";
+									?>
+									<option value="<?php echo $hotel['hotel_id']; ?>" <?php echo $selected; ?>><?php echo $hotel['hotel_name']; ?></option>
+									<?php
+											}
+										}
+									?>
+							    </select>
+                            </div>
+							<?php }?>
                             <div class="form-group">
                             	<label for="sector">Sector</label>
                                 <select class="form-control m-bot15" name="sector" id="sector" required>
-									<option></option>
 									<?php
-										if(!empty($userRole))
-										{
-											foreach($userRole as $role)
-											{
+									 if($this->session->userdata['isSuperAdmin'] == 1){?>
+										 <option value="1" selected>Admin</option>
+									 <?php } else{
+										if(!empty($userRole)){
+											foreach($userRole as $role){
 												$selected = "";
 												if(!empty($fields['sector']) && $fields['sector'] == $role['id']) $selected = "selected";
 									?>
@@ -51,15 +76,15 @@
 									<?php
 											}
 										}
+									 }
 									?>
 							    </select>
                             </div>
                             <div class="form-group">
                             	<label for="site_login">Site Login</label>
                                 <select class="form-control m-bot15" name="site_login" id="site_login" required>
-									<option></option>
 									<option value="1" <?php echo !empty($fields['site_login']) ? "selected" : "" ?>>Enabled</option>
-									<option value="0" <?php echo empty($fields['site_login']) ? "selected" : "" ?>>Disabled</option>
+									<!--<option value="0" <?php echo empty($fields['site_login']) ? "selected" : "" ?>>Disabled</option>-->
 							    </select>
                             </div>
                             <button type="submit" class="btn btn-info">Submit</button>

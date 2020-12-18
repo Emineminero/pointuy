@@ -37,15 +37,19 @@ class RoomsController extends CI_Controller{
 		$double_size=$this->input->post('double_size');
 		$king_size=$this->input->post('king_size');
 		$queen_size=$this->input->post('queen_size');
-
+		$room_condition=$this->input->post('room_condition');
+		$room_status=$this->input->post('room_status');
+		$hotel_id = $this->session->userdata['hotel_id'];
 		$insert_data=array(
             'room_number'=>$room_number, 
 			'room_type'=>$room_type,
 			'single_size' =>$single_size,
 			'double_size' =>$double_size,
 			'king_size' =>$king_size,
-			'queen_size' =>$queen_size
-
+			'queen_size' =>$queen_size,
+			'room_condition' =>$room_condition,
+			'room_status' =>$room_status,
+			'hotel_id' =>$hotel_id
 		);
 
 
@@ -76,8 +80,8 @@ class RoomsController extends CI_Controller{
 
 
 	public function showRoomsList(){
-
-		$data['fields']=$this->RoomsModel->getListData();
+		$hotel_id = $this->session->userdata['hotel_id'];
+		$data['fields']=$this->RoomsModel->getListData($hotel_id);
 
 		$this->load->view("header");
 		$this->load->view("rooms/rooms_list",$data);
@@ -124,14 +128,19 @@ class RoomsController extends CI_Controller{
 		$double_size=$this->input->post('double_size');
 		$king_size=$this->input->post('king_size');
 		$queen_size=$this->input->post('queen_size');
-
+		$room_condition=$this->input->post('room_condition');
+		$room_status=$this->input->post('room_status');
+		$hotel_id = $this->session->userdata['hotel_id'];
 		$updateData=array(
             'room_number'=>$room_number, 
 			'room_type'=>$room_type,
 			'single_size' =>$single_size,
 			'double_size' =>$double_size,
 			'king_size' =>$king_size,
-			'queen_size' =>$queen_size
+			'queen_size' =>$queen_size,
+			'room_condition' =>$room_condition,
+			'room_status' =>$room_status,
+			'hotel_id' =>$hotel_id
 
 		);
 
@@ -188,7 +197,8 @@ class RoomsController extends CI_Controller{
 function check_dupilcate_room_no()
 	{
 		if(empty($_REQUEST['room_nmber'])) return false;
-		echo $this->RoomsModel->checkDupilcateRoomNo($_REQUEST['room_nmber']);
+		$hotel_id = $this->session->userdata['hotel_id'];
+		echo $this->RoomsModel->checkDupilcateRoomNo($_REQUEST['room_nmber'],$hotel_id);
 		//echo $this->ItemModel->checkDupilcateRoomNo($_REQUEST['room_no']);
 	}
 

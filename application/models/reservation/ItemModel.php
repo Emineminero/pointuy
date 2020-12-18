@@ -2,9 +2,14 @@
 
 class ItemModel extends CI_Model {
 
-	function loadRoomTypes()
+	function loadRoomTypes($hotel_id = NULL)
 	{
-		$query = "SELECT DISTINCT(rooms.room_type) FROM rooms";
+		if($hotel_id){
+			$query="SELECT DISTINCT(rooms.room_type) FROM rooms WHERE hotel_id = $hotel_id";
+		} else{
+			$query = "SELECT DISTINCT(rooms.room_type) FROM rooms";
+		}
+		// $query = "SELECT DISTINCT(rooms.room_type) FROM rooms";
 		$query = $this->db->query($query);
 		$result = $query->result_array();
 		return $result;
@@ -106,6 +111,8 @@ class ItemModel extends CI_Model {
 		if(!empty($id))
 		{
 			$query .= " WHERE `reservation`.`id` = ".$id." ";
+		// } else{
+			// $query .= " WHERE `reservation`.`id` = ".$id." ";
 		}
 
 		$query = $this->db->query($query);
@@ -194,13 +201,30 @@ class ItemModel extends CI_Model {
   					rooms
   				WHERE
   					rooms.room_number LIKE '".$room_no."%' AND
-  					rooms.room_type LIKE '".$room_type."%' ";
+  					rooms.room_type LIKE '".$room_type."%' AND rooms.room_condition = 1 AND rooms.room_status=2 ";
 
 		$sql_result=$this->db->query($sql);
 		$result=$sql_result->result_array();
 
 		return $result;
   }
+
+	 public function delete($id){
+		   $this->db->delete('reservation', array('id' => $id)); 
+		   $this->db->delete('reservation_bill', array('reservation_id' => $id));
+		   $this->db->delete('reserved_room', array('reservation_id' => $id));
+			// $sql="DELETE FROM reservation,reservation_bill,reserved_room WHERE reservation.id=".$id;
+			// $excuteQuery=$this->db->query($sql);
+			$queryResult=$this->db->affected_rows();
+			return $queryResult;
+		}
+
+	function load_room($room_type){
+		$query = "SELECT room_number FROM rooms WHERE rooms.room_type LIKE '".$room_type."%' AND room_condition = 1 AND room_status=2";
+		$query = $this->db->query($query);
+		$result = $query->result_array();
+		return $result;
+	}
 
 }
 

@@ -114,7 +114,9 @@ class ItemModel extends CI_Model {
 				users.full_name,
 				users.user_name,
 				users.sector,
-				users.site_login
+				users.site_login,
+				users.hotel_id,
+				users.isSuperAdmin
 			FROM
 				users
 			WHERE
