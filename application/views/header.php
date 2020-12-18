@@ -98,7 +98,7 @@
             </div>
             <!--logo start-->
             <!--<a href="index.html" class="logo">Flat<span>lab</span></a>-->
-            <a href="http://localhost/hotel-proj/index.phpuser/UserController" class="logo">Hotel <span>Management</span> System</a>
+            <a href="http://localhost/hotel-proj/index.php/user/UserController" class="logo">Hotel <span>Management</span> System</a>
             <!--logo end-->
             <div class="nav notify-row" id="top_menu">
                 <!--  notification start -->
